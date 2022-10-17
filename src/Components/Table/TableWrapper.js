@@ -3,9 +3,11 @@ import { getOne } from "../../services/userService";
 
 import { TableElement } from "./TableElement";
 import { Details } from '../UserDetails/Details';
+import { Create } from '../UserCreate/Create';
 
 export const TableWrapper = ({users}) => {
     const [userDetails, setUserDetails] = useState(null);
+    const [userCreate, setUserCreate] = useState(null);
 
     const onDetailsHanlder = (userId) => {
         getOne(userId)
@@ -14,11 +16,17 @@ export const TableWrapper = ({users}) => {
 
     const onClose = () => {
         setUserDetails(null);
+        setUserCreate(null);
+    }
+
+    const onCreateHandler = () => {
+        setUserCreate([]);
     }
 
     return (
         <div className="table-wrapper">
             {userDetails && <Details user={userDetails} onClose={onClose}/>}
+            {userCreate && <Create onClose={onClose}/>}
             <table className="table">
                 <thead>
                     <tr>
@@ -120,7 +128,7 @@ export const TableWrapper = ({users}) => {
                     {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} />)}
                 </tbody>
             </table>
-            <button class="btn-add btn">Add new user</button>
+            <button class="btn-add btn" onClick={() => onCreateHandler()}>Add new user</button>
         </div>
 
     );

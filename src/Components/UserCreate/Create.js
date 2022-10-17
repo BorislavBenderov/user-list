@@ -1,12 +1,12 @@
-export const Create = () => {
+export const Create = ({ onClose }) => {
     return (
         <div className="overlay">
-            <div className="backdrop" />
+            <div className="backdrop" onClick={() => onClose()}/>
             <div className="modal">
                 <div className="user-container">
                     <header className="headers">
                         <h2>Add User</h2>
-                        <button className="btn close">
+                        <button className="btn close" onClick={() => onClose()}>
                             <svg
                                 aria-hidden="true"
                                 focusable="false"
