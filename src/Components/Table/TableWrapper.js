@@ -167,6 +167,7 @@ export const TableWrapper = () => {
                     <TableElement />
                 </tbody>
             </table>
+            <button class="btn-add btn">Add new user</button>
         </div>
 
     );
