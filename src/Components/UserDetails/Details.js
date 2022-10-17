@@ -1,12 +1,12 @@
-export const Details = () => {
+export const Details = ({ user, onClose }) => {
     return (
         <div className="overlay">
-            <div className="backdrop" />
+            <div className="backdrop" onClick={() => onClose()}/>
             <div className="modal">
                 <div className="detail-container">
                     <header className="headers">
                         <h2>User Detail</h2>
-                        <button className="btn close">
+                        <button className="btn close" onClick={() => onClose()}>
                             <svg
                                 aria-hidden="true"
                                 focusable="false"
@@ -34,27 +34,27 @@ export const Details = () => {
                         </div>
                         <div className="user-details">
                             <p>
-                                User Id: <strong>62bb0c0eda039e2fdccba57b</strong>
+                                User Id: <strong>{user._id}</strong>
                             </p>
                             <p>
                                 Full Name:
-                                <strong> Peter Johnson </strong>
+                                <strong> {user.firstName} {user.lastName} </strong>
                             </p>
                             <p>
-                                Email: <strong>peter@abv.bg</strong>
+                                Email: <strong>{user.email}</strong>
                             </p>
                             <p>
-                                Phone Number: <strong>0812345678</strong>
+                                Phone Number: <strong>{user.phoneNumber}</strong>
                             </p>
                             <p>
                                 Address:
-                                <strong> Bulgaria, Sofia, Aleksandar Malinov 78 </strong>
+                                <strong> {user.address.country}, {user.address.city}, {user.address.street} {user.address.streetNumber} </strong>
                             </p>
                             <p>
-                                Created on: <strong>Wednesday, June 28, 2022</strong>
+                                Created on: <strong>{user.createdAt}</strong>
                             </p>
                             <p>
-                                Modified on: <strong>Thursday, June 29, 2022</strong>
+                                Modified on: <strong>{user.updatedAt}</strong>
                             </p>
                         </div>
                     </div>

@@ -12,9 +12,13 @@ export const TableWrapper = ({users}) => {
         .then(user => setUserDetails(user.user))
     }
 
+    const onClose = () => {
+        setUserDetails(null);
+    }
+
     return (
         <div className="table-wrapper">
-            {userDetails && <Details />}
+            {userDetails && <Details user={userDetails} onClose={onClose}/>}
             <table className="table">
                 <thead>
                     <tr>
