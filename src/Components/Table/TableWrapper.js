@@ -1,9 +1,20 @@
+import { useState } from "react";
+import { getOne } from "../../services/userService";
+
 import { TableElement } from "./TableElement";
+import { Details } from '../UserDetails/Details';
 
 export const TableWrapper = ({users}) => {
+    const [userDetails, setUserDetails] = useState(null);
+
+    const onDetailsHanlder = (userId) => {
+        getOne(userId)
+        .then(user => setUserDetails(user.user))
+    }
 
     return (
         <div className="table-wrapper">
+            {userDetails && <Details />}
             <table className="table">
                 <thead>
                     <tr>
@@ -102,7 +113,7 @@ export const TableWrapper = ({users}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => <TableElement key={user._id} user={user}/>)}
+                    {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} />)}
                 </tbody>
             </table>
             <button class="btn-add btn">Add new user</button>

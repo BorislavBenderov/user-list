@@ -1,4 +1,4 @@
-export const TableElement = ({ user }) => {
+export const TableElement = ({ user, onDetailsHandler }) => {
     return (
         <tr>
             <td>
@@ -48,7 +48,7 @@ export const TableElement = ({ user }) => {
                         ></path>
                     </svg>
                 </button>
-                <button className="btn info-btn" title="Info">
+                <button className="btn info-btn" title="Info" onClick={() => onDetailsHandler(user._id)}>
                     <svg
                         aria-hidden="true"
                         focusable="false"

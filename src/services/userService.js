@@ -5,3 +5,11 @@ export const getAll = async () => {
     
     return result;
 }
+
+export const getOne = async (userId) => {
+    const responce = await fetch(`http://localhost:3005/api/users/${userId}`);
+    
+    const result = await responce.json();
+    
+    return result;
+}
