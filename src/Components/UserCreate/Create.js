@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { create } from "../../services/userService";
 
-export const Create = ({ onClose }) => {
+export const Create = ({ onClose, onCreatedUser }) => {
     const [values, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -23,8 +24,35 @@ export const Create = ({ onClose }) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const userdata = Object.fromEntries(new FormData(e.target));
-        console.log(userdata);
+        const formData = new FormData(e.target);
+        
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+        const email = formData.get('email');
+        const phoneNumber = formData.get('phoneNumber');
+        const imageUrl = formData.get('imageUrl');
+        const country = formData.get('country');
+        const city = formData.get('city');
+        const street = formData.get('street');
+        const streetNumber = formData.get('streetNumber');
+
+        const address = {
+            country,
+            city,
+            street,
+            streetNumber
+        };
+
+        const userData = {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            imageUrl,
+            address
+        };
+
+        onCreatedUser(userData);
     }
 
 

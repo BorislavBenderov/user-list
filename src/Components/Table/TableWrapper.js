@@ -1,32 +1,65 @@
-import { useState } from "react";
-import { getOne } from "../../services/userService";
+import { useState, useEffect } from "react";
+import * as userService from "../../services/userService";
 
 import { TableElement } from "./TableElement";
 import { Details } from '../UserDetails/Details';
 import { Create } from '../UserCreate/Create';
+import { Delete } from '../UserDelete/Delete';
 
-export const TableWrapper = ({users}) => {
+export const TableWrapper = () => {
+    const [users, setUsers] = useState([]);
     const [userDetails, setUserDetails] = useState(null);
     const [userCreate, setUserCreate] = useState(null);
+    const [userDelete, setUserDelete] = useState(null);
+
+    useEffect(() => {
+        userService.getAll()
+            .then(result => setUsers(Object.values(result.users)));
+    }, [])
+
 
     const onDetailsHanlder = (userId) => {
-        getOne(userId)
-        .then(user => setUserDetails(user.user))
+        userService.getOne(userId)
+            .then(user => setUserDetails(user))
     }
 
     const onClose = () => {
         setUserDetails(null);
         setUserCreate(null);
+        setUserDelete(null);
     }
 
     const onCreateHandler = () => {
         setUserCreate([]);
     }
 
+    const onCreatedUser = (userData) => {
+        userService.create(userData)
+        .then(user => {
+            setUsers(oldUsers => [
+                ...oldUsers,
+                user
+            ]);
+            onClose();
+        })   
+    }
+
+    const onDeleteHandler = (userId) => {
+        userService.getOne(userId)
+        .then(user => setUserDelete(user));
+    }
+
+    const deleteUser = (userId) => {
+        userService.del(userId);
+        setUsers(currentUser => currentUser.filter(user => user._id !== userId));
+        onClose();   
+    }
+
     return (
         <div className="table-wrapper">
-            {userDetails && <Details user={userDetails} onClose={onClose}/>}
-            {userCreate && <Create onClose={onClose}/>}
+            {userDetails && <Details user={userDetails} onClose={onClose} />}
+            {userCreate && <Create onClose={onClose} onCreatedUser={onCreatedUser} />}
+            {userDelete && <Delete user={userDelete} onClose={onClose} deleteUser={deleteUser} />}
             <table className="table">
                 <thead>
                     <tr>
@@ -125,7 +158,7 @@ export const TableWrapper = ({users}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} />)}
+                    {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} onDeleteHandler={onDeleteHandler}/>)}
                 </tbody>
             </table>
             <button class="btn-add btn" onClick={() => onCreateHandler()}>Add new user</button>

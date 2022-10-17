@@ -7,20 +7,13 @@ import { useEffect, useState } from "react";
 import { getAll } from "./services/userService";
 
 function App() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    getAll()
-    .then(result => setUsers(Object.values(result.users)));
-  }, [])
-
   return (
     <div className="App">
       <Header />
       <main className="main">
       <section className="card users-container">
         <Search />
-        <TableWrapper users={users}/>
+        <TableWrapper />
         <Pagination />
       </section>
       </main>
