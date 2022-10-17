@@ -1,4 +1,19 @@
+import { useState } from "react";
+
 export const Edit = ( {user, onClose} ) => {
+    const [values, setValues] = useState({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        imageUrl: user.imageUrl,
+        country: user.country,
+        city: user.city,
+        street: user.street,
+        streetNumber: user.streetNumber
+    });
+
+
     return (
         <div className="overlay">
             <div className="backdrop" onClick={() => onClose()}/>
@@ -32,7 +47,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="firstName" name="firstName" type="text" />
+                                    <input id="firstName" name="firstName" type="text" value={values.firstName}/>
                                 </div>
                                 <p className="form-error">
                                     First name should be at least 3 characters long!
@@ -44,7 +59,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="lastName" name="lastName" type="text" />
+                                    <input id="lastName" name="lastName" type="text" value={values.lastName}/>
                                 </div>
                                 <p className="form-error">
                                     Last name should be at least 3 characters long!
@@ -58,7 +73,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-envelope" />
                                     </span>
-                                    <input id="email" name="email" type="text" />
+                                    <input id="email" name="email" type="text" value={values.email}/>
                                 </div>
                                 <p className="form-error">Email is not valid!</p>
                             </div>
@@ -68,7 +83,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-phone" />
                                     </span>
-                                    <input id="phoneNumber" name="phoneNumber" type="text" />
+                                    <input id="phoneNumber" name="phoneNumber" type="text" value={values.phoneNumber}/>
                                 </div>
                                 <p className="form-error">Phone number is not valid!</p>
                             </div>
@@ -79,7 +94,7 @@ export const Edit = ( {user, onClose} ) => {
                                 <span>
                                     <i className="fa-solid fa-image" />
                                 </span>
-                                <input id="imageUrl" name="imageUrl" type="text" />
+                                <input id="imageUrl" name="imageUrl" type="text" value={values.imageUrl}/>
                             </div>
                             <p className="form-error">ImageUrl is not valid!</p>
                         </div>
@@ -90,7 +105,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="country" name="country" type="text" />
+                                    <input id="country" name="country" type="text" value={values.country}/>
                                 </div>
                                 <p className="form-error">
                                     Country should be at least 2 characters long!
@@ -102,7 +117,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-city" />
                                     </span>
-                                    <input id="city" name="city" type="text" />
+                                    <input id="city" name="city" type="text" value={values.city}/>
                                 </div>
                                 <p className="form-error">
                                     City should be at least 3 characters long!
@@ -116,7 +131,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="street" name="street" type="text" />
+                                    <input id="street" name="street" type="text" value={values.street}/>
                                 </div>
                                 <p className="form-error">
                                     Street should be at least 3 characters long!
@@ -128,7 +143,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-house-chimney" />
                                     </span>
-                                    <input id="streetNumber" name="streetNumber" type="text" />
+                                    <input id="streetNumber" name="streetNumber" type="text" value={values.streetNumber}/>
                                 </div>
                                 <p className="form-error">
                                     Street number should be a positive number!
