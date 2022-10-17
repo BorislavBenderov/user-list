@@ -5,12 +5,14 @@ import { TableElement } from "./TableElement";
 import { Details } from '../UserDetails/Details';
 import { Create } from '../UserCreate/Create';
 import { Delete } from '../UserDelete/Delete';
+import { Edit } from '../UserEdit/Edit';
 
 export const TableWrapper = () => {
     const [users, setUsers] = useState([]);
     const [userDetails, setUserDetails] = useState(null);
     const [userCreate, setUserCreate] = useState(null);
     const [userDelete, setUserDelete] = useState(null);
+    const [userEdit, setUserEdit] = useState(null);
 
     useEffect(() => {
         userService.getAll()
@@ -27,6 +29,7 @@ export const TableWrapper = () => {
         setUserDetails(null);
         setUserCreate(null);
         setUserDelete(null);
+        setUserEdit(null);
     }
 
     const onCreateHandler = () => {
@@ -55,11 +58,17 @@ export const TableWrapper = () => {
         onClose();   
     }
 
+    const onEditHandler = (userId) => {
+        userService.getOne(userId)
+        .then(user => setUserEdit(user))
+    }
+
     return (
         <div className="table-wrapper">
             {userDetails && <Details user={userDetails} onClose={onClose} />}
             {userCreate && <Create onClose={onClose} onCreatedUser={onCreatedUser} />}
             {userDelete && <Delete user={userDelete} onClose={onClose} deleteUser={deleteUser} />}
+            {userEdit && <Edit user={userEdit} onClose={onClose} />}
             <table className="table">
                 <thead>
                     <tr>
@@ -158,7 +167,7 @@ export const TableWrapper = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} onDeleteHandler={onDeleteHandler}/>)}
+                    {users.map(user => <TableElement key={user._id} user={user} onDetailsHandler={onDetailsHanlder} onDeleteHandler={onDeleteHandler} onEditHandler={onEditHandler}/>)}
                 </tbody>
             </table>
             <button class="btn-add btn" onClick={() => onCreateHandler()}>Add new user</button>

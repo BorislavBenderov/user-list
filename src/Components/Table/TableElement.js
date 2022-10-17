@@ -1,4 +1,4 @@
-export const TableElement = ({ user, onDetailsHandler, onDeleteHandler }) => {
+export const TableElement = ({ user, onDetailsHandler, onDeleteHandler, onEditHandler }) => {
     return (
         <tr>
             <td>
@@ -14,7 +14,7 @@ export const TableElement = ({ user, onDetailsHandler, onDeleteHandler }) => {
             <td>{user.phoneNumber}</td>
             <td>{user.createdAt}</td>
             <td className="actions">
-                <button className="btn edit-btn" title="Edit">
+                <button className="btn edit-btn" title="Edit" onClick={() => onEditHandler(user._id)}>
                     <svg
                         aria-hidden="true"
                         focusable="false"
