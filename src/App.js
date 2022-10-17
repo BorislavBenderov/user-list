@@ -2,6 +2,7 @@ import { Header } from "./Components/Header/Header";
 import { Search } from "./Components/Search/Search";
 import { TableWrapper } from "./Components/Table/TableWrapper";
 import { Pagination } from './Components/Pagination/Pagination';
+import { Footer } from './Components/Footer/Footer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Pagination />
       </section>
       </main>
+      <Footer />
     </div>
   );
 }
