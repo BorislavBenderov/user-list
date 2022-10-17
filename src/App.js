@@ -20,7 +20,7 @@ function App() {
       <main className="main">
       <section className="card users-container">
         <Search />
-        <TableWrapper />
+        <TableWrapper users={users}/>
         <Pagination />
       </section>
       </main>
