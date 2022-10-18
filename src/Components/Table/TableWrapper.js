@@ -63,12 +63,19 @@ export const TableWrapper = () => {
         .then(user => setUserEdit(user))
     }
 
+    const onEditedUser = (userId, userData) => {
+        userService.edit(userId, userData)
+        .then(user => setUsers(oldUsers => oldUsers.map(x => x._id === user._id ? user : x)));
+        onClose();
+        
+    }
+
     return (
         <div className="table-wrapper">
             {userDetails && <Details user={userDetails} onClose={onClose} />}
             {userCreate && <Create onClose={onClose} onCreatedUser={onCreatedUser} />}
             {userDelete && <Delete user={userDelete} onClose={onClose} deleteUser={deleteUser} />}
-            {userEdit && <Edit user={userEdit} onClose={onClose} />}
+            {userEdit && <Edit user={userEdit} onClose={onClose} onEditedUser={onEditedUser}/>}
             <table className="table">
                 <thead>
                     <tr>

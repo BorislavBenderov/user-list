@@ -1,18 +1,58 @@
 import { useState } from "react";
 
-export const Edit = ( {user, onClose} ) => {
+export const Edit = ( {user, onClose, onEditedUser} ) => {
     const [values, setValues] = useState({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         phoneNumber: user.phoneNumber,
         imageUrl: user.imageUrl,
-        country: user.country,
-        city: user.city,
-        street: user.street,
-        streetNumber: user.streetNumber
+        country: user.address.country,
+        city: user.address.city,
+        street: user.address.street,
+        streetNumber: user.address.streetNumber
     });
 
+    const changeHandler = (e) => {
+        setValues(state => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+        const email = formData.get('email');
+        const phoneNumber = formData.get('phoneNumber');
+        const imageUrl = formData.get('imageUrl');
+        const country = formData.get('country');
+        const city = formData.get('city');
+        const street = formData.get('street');
+        const streetNumber = formData.get('streetNumber');
+
+        const address = {
+            country,
+            city,
+            street,
+            streetNumber
+        };
+
+        const userData = {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            imageUrl,
+            address
+        };
+
+        onEditedUser(user._id, userData);
+    }
 
     return (
         <div className="overlay">
@@ -39,7 +79,7 @@ export const Edit = ( {user, onClose} ) => {
                             </svg>
                         </button>
                     </header>
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="firstName">First name</label>
@@ -47,7 +87,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="firstName" name="firstName" type="text" value={values.firstName}/>
+                                    <input id="firstName" name="firstName" type="text" value={values.firstName} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     First name should be at least 3 characters long!
@@ -59,7 +99,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="lastName" name="lastName" type="text" value={values.lastName}/>
+                                    <input id="lastName" name="lastName" type="text" value={values.lastName} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     Last name should be at least 3 characters long!
@@ -73,7 +113,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-envelope" />
                                     </span>
-                                    <input id="email" name="email" type="text" value={values.email}/>
+                                    <input id="email" name="email" type="text" value={values.email} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">Email is not valid!</p>
                             </div>
@@ -83,7 +123,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-phone" />
                                     </span>
-                                    <input id="phoneNumber" name="phoneNumber" type="text" value={values.phoneNumber}/>
+                                    <input id="phoneNumber" name="phoneNumber" type="text" value={values.phoneNumber} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">Phone number is not valid!</p>
                             </div>
@@ -94,7 +134,7 @@ export const Edit = ( {user, onClose} ) => {
                                 <span>
                                     <i className="fa-solid fa-image" />
                                 </span>
-                                <input id="imageUrl" name="imageUrl" type="text" value={values.imageUrl}/>
+                                <input id="imageUrl" name="imageUrl" type="text" value={values.imageUrl} onChange={changeHandler}/>
                             </div>
                             <p className="form-error">ImageUrl is not valid!</p>
                         </div>
@@ -105,7 +145,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="country" name="country" type="text" value={values.country}/>
+                                    <input id="country" name="country" type="text" value={values.country} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     Country should be at least 2 characters long!
@@ -117,7 +157,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-city" />
                                     </span>
-                                    <input id="city" name="city" type="text" value={values.city}/>
+                                    <input id="city" name="city" type="text" value={values.city} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     City should be at least 3 characters long!
@@ -131,7 +171,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="street" name="street" type="text" value={values.street}/>
+                                    <input id="street" name="street" type="text" value={values.street} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     Street should be at least 3 characters long!
@@ -143,7 +183,7 @@ export const Edit = ( {user, onClose} ) => {
                                     <span>
                                         <i className="fa-solid fa-house-chimney" />
                                     </span>
-                                    <input id="streetNumber" name="streetNumber" type="text" value={values.streetNumber}/>
+                                    <input id="streetNumber" name="streetNumber" type="text" value={values.streetNumber} onChange={changeHandler}/>
                                 </div>
                                 <p className="form-error">
                                     Street number should be a positive number!
@@ -151,7 +191,7 @@ export const Edit = ( {user, onClose} ) => {
                             </div>
                         </div>
                         <div id="form-actions">
-                            <button id="action-save" className="btn" type="submit">
+                            <button id="action-save" className="btn" type="submit" >
                                 Save
                             </button>
                             <button id="action-cancel" className="btn" type="button" onClick={() => onClose()}>
