@@ -2,6 +2,7 @@ import { useState } from "react";
 import { create } from "../../services/userService";
 
 export const Create = ({ onClose, onCreatedUser }) => {
+    const [errors, setErrors] = useState({});
     const [values, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -25,7 +26,7 @@ export const Create = ({ onClose, onCreatedUser }) => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        
+
         const firstName = formData.get('firstName');
         const lastName = formData.get('lastName');
         const email = formData.get('email');
@@ -55,11 +56,32 @@ export const Create = ({ onClose, onCreatedUser }) => {
         onCreatedUser(userData);
     }
 
+    const minLength = (e, bound) => {
+        setErrors(state => ({
+            ...state,
+            [e.target.name]: values[e.target.name].length < bound
+        }));
+    }
+
+    const validator = (e, validate) => {
+        setErrors(state => ({
+            ...state,
+            [e.target.name]: !values[e.target.name].match(validate)
+        }));
+    }
+
+    const positiveNumber = (e) => {
+        setErrors(state => ({
+            ...state,
+            [e.target.name]: !Number(values[e.target.name]) || Number(values[e.target.name] < 0)
+        }))
+    }
+
 
 
     return (
         <div className="overlay">
-            <div className="backdrop" onClick={() => onClose()}/>
+            <div className="backdrop" onClick={() => onClose()} />
             <div className="modal">
                 <div className="user-container">
                     <header className="headers">
@@ -90,11 +112,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="firstName" name="firstName" type="text" value={values.firstName} onChange={changeHandler}/>
+                                    <input id="firstName" name="firstName" type="text" value={values.firstName} onChange={changeHandler} onBlur={(e) => minLength(e, 3)} />
                                 </div>
-                                <p className="form-error">
-                                    First name should be at least 3 characters long!
-                                </p>
+                                {errors.firstName &&
+                                    <p className="form-error">
+                                        First name should be at least 3 characters long!
+                                    </p>}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="lastName">Last name</label>
@@ -102,11 +125,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="lastName" name="lastName" type="text" value={values.lastName} onChange={changeHandler}/>
+                                    <input id="lastName" name="lastName" type="text" value={values.lastName} onChange={changeHandler} onBlur={(e) => minLength(e, 3)} />
                                 </div>
-                                <p className="form-error">
-                                    Last name should be at least 3 characters long!
-                                </p>
+                                {errors.lastName &&
+                                    <p className="form-error">
+                                        Last name should be at least 3 characters long!
+                                    </p>}
                             </div>
                         </div>
                         <div className="form-row">
@@ -116,9 +140,10 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-envelope" />
                                     </span>
-                                    <input id="email" name="email" type="text" value={values.email} onChange={changeHandler}/>
+                                    <input id="email" name="email" type="text" value={values.email} onChange={changeHandler} onBlur={(e) => validator(e, /^[A-Za-z0-9_\.]+@[A-Za-z]+\.[A-Za-z]{2,3}$/)} />
                                 </div>
-                                <p className="form-error">Email is not valid!</p>
+                                {errors.email &&
+                                    <p className="form-error">Email is not valid!</p>}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="phoneNumber">Phone number</label>
@@ -126,9 +151,10 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-phone" />
                                     </span>
-                                    <input id="phoneNumber" name="phoneNumber" type="text" value={values.phoneNumber} onChange={changeHandler}/>
+                                    <input id="phoneNumber" name="phoneNumber" type="text" value={values.phoneNumber} onChange={changeHandler} onBlur={(e) => validator(e, /^0[1-9]{1}[0-9]{8}$/)} />
                                 </div>
-                                <p className="form-error">Phone number is not valid!</p>
+                                {errors.phoneNumber &&
+                                    <p className="form-error">Phone number is not valid!</p>}
                             </div>
                         </div>
                         <div className="form-group long-line">
@@ -137,9 +163,10 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                 <span>
                                     <i className="fa-solid fa-image" />
                                 </span>
-                                <input id="imageUrl" name="imageUrl" type="text" value={values.imageUrl} onChange={changeHandler}/>
+                                <input id="imageUrl" name="imageUrl" type="text" value={values.imageUrl} onChange={changeHandler} onBlur={(e) => validator(e, /^https?:\/\/.+/)} />
                             </div>
-                            <p className="form-error">ImageUrl is not valid!</p>
+                            {errors.imageUrl &&
+                                <p className="form-error">ImageUrl is not valid!</p>}
                         </div>
                         <div className="form-row">
                             <div className="form-group">
@@ -148,11 +175,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="country" name="country" type="text" value={values.country} onChange={changeHandler}/>
+                                    <input id="country" name="country" type="text" value={values.country} onChange={changeHandler} onBlur={(e) => minLength(e, 2)} />
                                 </div>
-                                <p className="form-error">
-                                    Country should be at least 2 characters long!
-                                </p>
+                                {errors.country &&
+                                    <p className="form-error">
+                                        Country should be at least 2 characters long!
+                                    </p>}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="city">City</label>
@@ -160,11 +188,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-city" />
                                     </span>
-                                    <input id="city" name="city" type="text" value={values.city} onChange={changeHandler}/>
+                                    <input id="city" name="city" type="text" value={values.city} onChange={changeHandler} onBlur={(e) => minLength(e, 3)} />
                                 </div>
-                                <p className="form-error">
-                                    City should be at least 3 characters long!
-                                </p>
+                                {errors.city &&
+                                    <p className="form-error">
+                                        City should be at least 3 characters long!
+                                    </p>}
                             </div>
                         </div>
                         <div className="form-row">
@@ -174,11 +203,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="street" name="street" type="text" value={values.street} onChange={changeHandler}/>
+                                    <input id="street" name="street" type="text" value={values.street} onChange={changeHandler} onBlur={(e) => minLength(e, 3)} />
                                 </div>
-                                <p className="form-error">
-                                    Street should be at least 3 characters long!
-                                </p>
+                                {errors.street &&
+                                    <p className="form-error">
+                                        Street should be at least 3 characters long!
+                                    </p>}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="streetNumber">Street number</label>
@@ -186,11 +216,12 @@ export const Create = ({ onClose, onCreatedUser }) => {
                                     <span>
                                         <i className="fa-solid fa-house-chimney" />
                                     </span>
-                                    <input id="streetNumber" name="streetNumber" type="text" value={values.streetNumber} onChange={changeHandler}/>
+                                    <input id="streetNumber" name="streetNumber" type="text" value={values.streetNumber} onChange={changeHandler} onBlur={(e) => positiveNumber(e)} />
                                 </div>
-                                <p className="form-error">
-                                    Street number should be a positive number!
-                                </p>
+                                {errors.streetNumber &&
+                                    <p className="form-error">
+                                        Street number should be a positive number!
+                                    </p>}
                             </div>
                         </div>
                         <div id="form-actions">
